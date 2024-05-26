@@ -19,6 +19,7 @@
 - Nếu cần dùng thêm các hàm khác (như phân tách xâu ký tự, ...), code và lưu trong thư mục `utils`.
 - **Tham khảo code tạo tiến trình con của mình** , có thể chạy thử trên cmd:
 ```
+git clone https://github.com/ihbkaiser/TinyShell.git
 cd TinyShell
 main.exe
 Enter command: fork ./test/example.exe
