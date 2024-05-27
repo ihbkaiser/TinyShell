@@ -43,7 +43,7 @@ int _tmain(int argc, TCHAR *argv[])
             }
             else
             {
-                cout << "Usage: fork <command> [foreground/background]" << endl;
+                cout << "Usage: fork <dir> [foreground/background]" << endl;
             }
         }
         // add more commands here
