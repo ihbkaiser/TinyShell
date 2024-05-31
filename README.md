@@ -24,4 +24,5 @@ cd TinyShell
 main.exe
 Enter command: fork ./test/example.exe
 ```
-## Quyết tâm vì điểm A môn Hệ điều hành !
+## 4. Update 
+- 31/5/2024 : Vector processes lưu ở hàm main đã lưu tất cả những tiến trình background đang chạy, có thể sử dụng ngay (nhưng trước khi xử lý cần loại bỏ các tiến trình background chưa kết thúc, bằng cách gọi hàm `bool currentActive()`.
