@@ -62,6 +62,7 @@ void createChildProcess(int argc, TCHAR *argv[])
     // Print the PID of the created process
     printf("Created process PID: %d\n", pi.dwProcessId);
 
+<<<<<<< Updated upstream
     // Wait until child process exits.
     WaitForSingleObject(pi.hProcess, INFINITE);
     TerminateProcess(pi.hProcess, 0);
@@ -70,5 +71,25 @@ void createChildProcess(int argc, TCHAR *argv[])
     CloseHandle(pi.hProcess);
     CloseHandle(pi.hThread);
     printf("End of child process");
+=======
+    if (process->isForeground()) {
+        WaitForSingleObject(process->pi.hProcess, INFINITE);
+        CloseHandle(process->pi.hProcess);
+        CloseHandle(process->pi.hThread);
+        // after this , the foreground process ends
+        // now we delete it from the processes list vector.
+        for (auto it = list_of_process.begin(); it != list_of_process.end(); ++it) {
+            if ((*it)->pi.dwProcessId == process->pi.dwProcessId) {
+                list_of_process.erase(it);
+                break;
+            }
+        }
+    } 
+	else {
+        CloseHandle(process->pi.hProcess);
+        CloseHandle(process->pi.hThread);
+        printf("Child process is running in background\n");
+    }
+>>>>>>> Stashed changes
 }
 
