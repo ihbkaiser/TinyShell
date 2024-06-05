@@ -7,10 +7,10 @@
 ## 2. Phân chia công việc
 | Thành viên | Phần công việc | Deadline |
 |-----------|----------------|----------|
-| Tùng      | Tạo tiến trình con (foreground, background mode) | 14/06/2024 |
-| Cường     | Quản lý tiến trình (List, kill, stop, resume)   | 14/06/2024 |
-| Chung     | Các lệnh đặc biệt (date, time, dir,...)         | 14/06/2024 |
-| Đăng      | Thực thi file .bat                               | 14/06/2024 |
+| Tùng      | Tạo tiến trình con (foreground, background mode) | 11/06/2024 |
+| Cường     | Quản lý tiến trình (List, kill, stop, resume)   | 11/06/2024 |
+| Chung     | Các lệnh đặc biệt (date, time, dir,...)         | 11/06/2024 |
+| Đăng      | Thực thi file .bat                               | 11/06/2024 |
 
 ## 3. Hướng dẫn
 - Code phần việc tương ứng thành một file `*.h` trong thư mục `include` (ví dụ `createchildprocess.h`, `killprocess.h`, ...).
