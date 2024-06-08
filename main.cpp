@@ -41,6 +41,8 @@ int _tmain(int argc, TCHAR *argv[])
         if (input.substr(0, 4) == "fork")
         {
             vector<string> command = split(input, ' ');
+            // command = {"fork" , "test/example.exe"}
+            // kill 6969 
 
             if (command.size() == 2)
             {
@@ -48,6 +50,7 @@ int _tmain(int argc, TCHAR *argv[])
                 _stprintf(arg, _T("%s"), command[1].c_str());
                 TCHAR* new_argv[] = { NULL, arg };
                 createChildProcess(2, new_argv);
+                // int argc, char ** argv
             }
             else if (command.size() == 3)
             {
