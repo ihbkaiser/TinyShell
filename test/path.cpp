@@ -1,12 +1,11 @@
-#include "./include/createchildprocess.h"
-#include "./utils/splitcommand.h"
-#include "./include/path.h"
+#include "../include/createchildprocess.h"
+#include "../include/path.h"
+#include "../utils/splitcommand.h"
 #include <string>
 #include <iostream>
 #include <vector>
 #include <tchar.h>
-
-std::vector<Process*> list_of_process; // vector of processes.
+std::vector<Process*> list_of_process;
 std::vector<std::string> Path;
 int _tmain(int argc, TCHAR *argv[])
 {
