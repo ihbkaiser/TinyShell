@@ -1,4 +1,5 @@
 #include "./include/createchildprocess.h"
+#include "./include/executebatchfile.h"
 #include "./utils/splitcommand.h"
 #include "./include/path.h"
 #include <string>
@@ -61,6 +62,14 @@ int _tmain(int argc, TCHAR *argv[])
             else
             {
                 cout << "Usage: fork <dir> [foreground/background]" << endl;
+            }
+        }
+        if (input.substr(0, 6) == "exebat") {
+            vector<string> command = split(input, ' ');
+            if (command.size() == 2) {
+                executeBatchFile(command[1]);
+            } else {
+                std::cout << "Usage: exebat <filepath>\n";
             }
         }
         // add more commands here

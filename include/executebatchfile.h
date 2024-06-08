@@ -1,17 +1,37 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include <iostream>
+#include <string>
+#include <windows.h>
 
-int exeBatchFile(const char *batchFilePath) {
-    char command[256];
-    snprintf(command, sizeof(command), "start /b /wait %s", batchFilePath);
+void executeBatchFile(const std::string& filePath) {
+    STARTUPINFO si = { sizeof(si) };
+    PROCESS_INFORMATION pi;
 
-    int result = system(command);
+    // Thiết lập thuộc tính để không hiển thị cửa sổ
+    si.dwFlags = STARTF_USESHOWWINDOW;
+    si.wShowWindow = SW_HIDE;
 
-    if(result == -1) {
-        perror("Error executing batch file");
-        return EXIT_FAILURE;
+    // Chuỗi lệnh để chạy file batch
+    std::string command = "cmd /c " + filePath;
+
+    // Khởi tạo quá trình
+    if (CreateProcess(
+        NULL,                      // No module name (use command line)
+        &command[0],               // Command line
+        NULL,                      // Process handle not inheritable
+        NULL,                      // Thread handle not inheritable
+        FALSE,                     // Set handle inheritance to FALSE
+        0,                         // No creation flags
+        NULL,                      // Use parent's environment block
+        NULL,                      // Use parent's starting directory 
+        &si,                       // Pointer to STARTUPINFO structure
+        &pi)                       // Pointer to PROCESS_INFORMATION structure
+    ) {
+        // Đợi quá trình hoàn thành
+        WaitForSingleObject(pi.hProcess, INFINITE);
+        CloseHandle(pi.hProcess);
+        CloseHandle(pi.hThread);
+        std::cout << "Batch file executed successfully.\n";
+    } else {
+        std::cerr << "Failed to execute batch file. Error: " << GetLastError() << "\n";
     }
-
-    printf("Batch file executed successfully.\n");
-    return EXIT_SUCCESS;
 }

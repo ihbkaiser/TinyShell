@@ -1,40 +1,23 @@
-#include <string>
-#include <iostream>
-#include <string>
-#include <vector>
-#include <tchar.h>
-#include "../utils/splitcommand.h"
 #include "../include/executebatchfile.h"
 
+int main() {
+    std::string input;
 
-using namespace std;
+    while (true) {
+        std::cout << "tiny-shell> ";
+        std::getline(std::cin, input);
 
-
-int _tmain( int argc, TCHAR *argv[] )
-{
-    while(true) {
-        string input;
-        cout << "\nEnter command: ";
-        getline(cin, input);
-
+        // Kiểm tra lệnh "exit"
         if (input == "exit") {
-            break;
+            break
         }
 
-        if (input.substr(0, 8) == "exebatch")
-        {
-            vector<string> command = split(input, ' ');
-
-            if (command.size() > 1)
-            {
-                exeBatchFile(command[1].c_str());
-            }
-            else
-            {
-                cout << "Usage: exebatch <filepath>" << endl;
-            }
+        // Kiểm tra và thực thi file batch
+        if (input.substr(input.find_last_of(".") + 1) == "bat") {
+            executeBatchFile(input);
+        } else {
+            std::cout << "Unsupported command or file type. Please enter a .bat file or type 'exit' to quit.\n";
         }
-        // add more commands here
     }
 
     return 0;
