@@ -2,6 +2,7 @@
 #include "./include/executebatchfile.h"
 #include "./utils/splitcommand.h"
 #include "./include/path.h"
+#include "./include/date.h"
 #include <string>
 #include <iostream>
 #include <vector>
@@ -26,6 +27,10 @@ int _tmain(int argc, TCHAR *argv[])
         if (input == "listpath"){
         	listpath();
         	continue;
+		}
+		if (input == "date"){
+			PrintDate();
+			continue;
 		}
 		if (input.substr(0,7) == "addpath"){
 			vector<string> command = split(input, ' ');
