@@ -35,6 +35,7 @@ int _tmain(int argc, TCHAR *argv[])
         if (input == "exit") {
             break;
         }
+<<<<<<< HEAD
         
         if (input == "clear") {
             system("cls");
@@ -66,6 +67,38 @@ int _tmain(int argc, TCHAR *argv[])
                 continue;
             }
         }
+=======
+        if (input == "clear") system("cls");
+        if (input == "time"){
+        	COORD here = cursor();
+        	printClock(here);
+		}
+        if (input == "listpath"){
+        	listpath();
+        	continue;
+		}
+		if (input == "date"){
+			PrintDate();
+			continue;
+		}
+		if (input.substr(0,7) == "addpath"){
+			vector<string> command = split(input, ' ');
+			if(command.size() == 1){
+				cout << "Usage: addpath <path>";
+			}
+			if(command.size() == 2){
+				std::string new_path = command[1];
+				addpath(new_path);
+				continue;
+			}
+		}
+
+        if (input.substr(0, 4) == "fork")
+        {
+            vector<string> command = split(input, ' ');
+            // command = {"fork" , "test/example.exe"}
+            // kill 6969 
+>>>>>>> e1f4f4ad0cf1f68cc3b7ccbba7926d0a8d6c5f0e
 
         if (input.substr(0, 4) == "fork") {
             vector<string> command = split(input, ' ');
@@ -75,11 +108,19 @@ int _tmain(int argc, TCHAR *argv[])
                 TCHAR arg[50];
                 _stprintf(arg, _T("%s"), command[1].c_str());
                 TCHAR* new_argv[] = { NULL, arg };
+<<<<<<< HEAD
                 pid_t pid = createChildProcess(2, new_argv);
                 if (pid > 0) {
                     processes[pid] = command[1];
                 }
             } else if (command.size() == 3) {
+=======
+                createChildProcess(2, new_argv);
+                // int argc, char ** argv
+            }
+            else if (command.size() == 3)
+            {
+>>>>>>> e1f4f4ad0cf1f68cc3b7ccbba7926d0a8d6c5f0e
                 TCHAR arg1[50];
                 TCHAR arg2[50];
                 _stprintf(arg1, _T("%s"), command[1].c_str());
@@ -93,7 +134,10 @@ int _tmain(int argc, TCHAR *argv[])
                 cout << "Usage: fork <dir> [foreground/background]" << endl;
             }
         }
+<<<<<<< HEAD
         
+=======
+>>>>>>> e1f4f4ad0cf1f68cc3b7ccbba7926d0a8d6c5f0e
         if (input.substr(0, 6) == "exebat") {
             vector<string> command = split(input, ' ');
             if (command.size() == 2) {
@@ -102,6 +146,7 @@ int _tmain(int argc, TCHAR *argv[])
                 std::cout << "Usage: exebat <filepath>\n";
             }
         }
+<<<<<<< HEAD
 
         if (input == "list") {
             cout << "Running processes:" << endl;
@@ -165,6 +210,8 @@ int _tmain(int argc, TCHAR *argv[])
             }
         }
 
+=======
+>>>>>>> e1f4f4ad0cf1f68cc3b7ccbba7926d0a8d6c5f0e
         // add more commands here
     }
 

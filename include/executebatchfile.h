@@ -1,17 +1,40 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include <iostream>
+#include <string>
+#include <windows.h>
+#include <algorithm>
+void executeBatchFile(std::string& filePath) {
+    STARTUPINFO si = { sizeof(si) };
+    PROCESS_INFORMATION pi;
 
-int exeBatchFile(const char *batchFilePath) {
-    char command[256];
-    snprintf(command, sizeof(command), "start /b /wait %s", batchFilePath);
+    si.dwFlags = STARTF_USESHOWWINDOW;
+    si.wShowWindow = SW_HIDE;
+    
+    // accept file path with '/' 
+    std::replace(filePath.begin(), filePath.end(), '/', '\\');
+    std::string command = "cmd /c " + filePath;
 
-    int result = system(command);
-
-    if(result == -1) {
-        perror("Error executing batch file");
-        return EXIT_FAILURE;
+    if (CreateProcess(
+        NULL,                      // No module name (use command line)
+        &command[0],               // Command line
+        NULL,                      // Process handle not inheritable
+        NULL,                      // Thread handle not inheritable
+        FALSE,                     // Set handle inheritance to FALSE
+        0,                         // No creation flags
+        NULL,                      // Use parent's environment block
+        NULL,                      // Use parent's starting directory 
+        &si,                       // Pointer to STARTUPINFO structure
+        &pi)                       // Pointer to PROCESS_INFORMATION structure
+    ) {
+        DWORD exitCode;
+        WaitForSingleObject(pi.hProcess, INFINITE);
+        GetExitCodeProcess(pi.hProcess, &exitCode);
+        CloseHandle(pi.hProcess);
+        CloseHandle(pi.hThread);
+        if(exitCode == 0) std::cout << "Batch file executed successfully.\n";
+        else{
+        	std::cerr << "Failed to execute batch file. Error: " << exitCode << "\n";
+		}
+    } else {
+        std::cerr << "Failed to execute batch file. Error: " << GetLastError() << "\n";
     }
-
-    printf("Batch file executed successfully.\n");
-    return EXIT_SUCCESS;
 }
