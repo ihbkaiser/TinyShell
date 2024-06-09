@@ -119,6 +119,7 @@ BOOL WINAPI CtrlHandler(DWORD fdwCtrlType) {
             /* 9-6-2024 now background process will be killed along with the shell after Ctrl-C
             if u want to use (1) , then type "exit sf" instead.*/
 			else {
+				killbg();
                 printf("\nCtrl-C event detected, no foreground process\nThe shell will terminate after all background processes have ended.");
                 return FALSE; // Allow the parent process to be terminated
             }
