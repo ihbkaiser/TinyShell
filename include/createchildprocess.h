@@ -27,45 +27,64 @@ struct Process {
     }
 
     void terminate() {
-        TerminateProcess(pi.hProcess, 1);
+    	if(currentActive()){
+    	if(!TerminateProcess(pi.hProcess, 1)) std::cerr << "Error terminating the process." << std::endl;
         CloseHandle(pi.hProcess);
         CloseHandle(pi.hThread);
         // after terminate process, we should delete it from the list list_of_process vector.
+		}
+		else std::cout<<"The process already terminated\n";
+        
     }
     void stop() {
-        isStop = true;
     if (currentActive()) {
         if (SuspendThread(pi.hThread) == -1) {
             // Handle error
             std::cerr << "Error stopping the process." << std::endl;
+        } else {
+            isStop = true;
         }
     } else {
         std::cerr << "Process is not currently running." << std::endl;
     }
 }
     void resume() {
-    DWORD threadStatus = SuspendThread(pi.hThread);
-    if (threadStatus == -1) {
-        // Error occurred
-        std::cerr << "Error checking process status." << std::endl;
-    } else if (threadStatus == 0) {
-        // Thread is not suspended, i.e., process is running
-        std::cerr << "Process is not stopped." << std::endl;
-    } else {
-        // Thread is suspended, i.e., process is stopped
+    if (isStop) {
         if (ResumeThread(pi.hThread) == -1) {
-            // Error occurred
+            // error occurred 
             std::cerr << "Error resuming the process." << std::endl;
+        } else {
+            isStop = false;
         }
+    } else {
+        std::cerr << "Process is not stopped." << std::endl;
     }
-    isStop = false;
 }
-
-
 };
 
-extern std::vector<Process*> list_of_process; // the list_of_process vector move to main() function
 
+extern std::vector<Process*> list_of_process; // the list_of_process vector move to main() function
+void killbg() {
+    std::vector<Process*> toTerminate;
+
+    // Find all background processes
+    for (auto& process : list_of_process) {
+        if (!process->isForeground()) {
+            toTerminate.push_back(process);
+        }
+    }
+
+    // Terminate all background processes and remove them from the list
+    for (auto& process : toTerminate) {
+        process->terminate();
+        for (auto it = list_of_process.begin(); it != list_of_process.end(); ++it) {
+            if ((*it)->pi.dwProcessId == process->pi.dwProcessId) {
+                list_of_process.erase(it);
+                break;
+            }
+        }
+    }
+}
 BOOL WINAPI CtrlHandler(DWORD fdwCtrlType) {
     bool hasForeground = false;
     std::vector<Process*> toTerminate;
@@ -94,7 +113,10 @@ BOOL WINAPI CtrlHandler(DWORD fdwCtrlType) {
                 return TRUE; 
             } 
             /* if we have 0 foreground but some background list_of_process, Ctrl-C will terminate
-            the shell (after waiting all background processes end) */
+            the shell (after waiting all background processes end)  (1) */ 
+            
+            /* 9-6-2024 now background process will be killed along with the shell after Ctrl-C
+            if u want to use (1) , then type "exit sf" instead.*/
 			else {
                 printf("\nCtrl-C event detected, no foreground process\nThe shell will terminate after all background processes have ended.");
                 return FALSE; // Allow the parent process to be terminated

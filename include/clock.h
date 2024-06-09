@@ -37,7 +37,7 @@ void printClock(COORD startpos) {
             t = std::time(nullptr);
             t += (timeZone.offset + localOffset) * 3600; 
             std::tm* now = std::gmtime(&t); 
-            SetConsoleCursorPosition(hConsole, {startpos.X, startpos.Y+ static_cast<SHORT>(i + 1)}); 
+            SetConsoleCursorPosition(hConsole, {startpos.X,  static_cast<SHORT>(startpos.Y+ i + 1)}); 
             std::cout << "Current time in " << timeZone.name << ": "
                       << (now->tm_hour < 10 ? "0" : "") << now->tm_hour << ':'
                       << (now->tm_min < 10 ? "0" : "") << now->tm_min << ':'

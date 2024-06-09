@@ -1,5 +1,6 @@
 #include "./include/createchildprocess.h"
 #include "./include/executebatchfile.h"
+#include "./include/listprocess.h"
 #include "./utils/splitcommand.h"
 #include "./utils/cursor.h"
 #include "./include/path.h"
@@ -27,7 +28,7 @@ int _tmain(int argc, TCHAR *argv[])
         	vector<string> command = split(input, ' ');
         	if(command.size() == 1){
         		//todo: fix exits, exitss, exitsss
-        		// killbg();
+        		killbg();
         		break;
 			}
             else if(command.size() == 2){
@@ -49,6 +50,12 @@ int _tmain(int argc, TCHAR *argv[])
 		if (input == "date"){
 			PrintDate();
 			continue;
+		}
+		if (input == "list"){
+			listprocess();
+		}
+		if (input == "close"){
+			close();
 		}
 		if (input.substr(0,7) == "addpath"){
 			vector<string> command = split(input, ' ');
@@ -122,21 +129,26 @@ int _tmain(int argc, TCHAR *argv[])
          if (input.substr(0,6) == "resume"){
         	vector<string> command = split(input, ' ');
         	bool found = false; //did we found a process with that pid ?
+        	bool findStop = false;
         	if(command.size() == 2){
         		DWORD pid = stoi(command[1]);
         		for(Process* process : list_of_process){
+        			if(process->pi.dwProcessId == pid) found = true;
         			if(process->pi.dwProcessId == pid && process->isStop){
         				process->resume();
-        				found = true;
+        				findStop = true;
         				break;
 					}
 				}
 				if(!found){
 					std::cout << "Cannot find process with PID " << pid << endl;
 				}
+				if(found && !findStop){
+					std::cout << "Process with PID " << pid << " not stopped";
+				}
 			}
 			else{
-				std::cout << "Usage: stop <pid>" << endl;
+				std::cout << "Usage: resume <pid>" << endl;
 			}
 		}
         if (input.substr(0,4) == "kill"){
@@ -156,7 +168,7 @@ int _tmain(int argc, TCHAR *argv[])
 				}
 			}
 			else{
-				std::cout << "Usage: stop <pid>" << endl;
+				std::cout << "Usage: kill <pid>" << endl;
 			}
 		}
     }
