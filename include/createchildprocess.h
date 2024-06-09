@@ -59,13 +59,13 @@ BOOL WINAPI CtrlHandler(DWORD fdwCtrlType) {
             }
             // if we have some foreground process, we dont terminate the shell when Ctrl-C
             if (hasForeground) {
-                printf("Ctrl-C event detected, all foreground child processes terminated\n");
+                printf("\nCtrl-C event detected, all foreground child processes terminated\n");
                 return TRUE; 
             } 
             /* if we have 0 foreground but some background list_of_process, Ctrl-C will terminate
             the shell (after waiting all background processes end) */
 			else {
-                printf("Ctrl-C event detected, no foreground process\nThe shell will terminate after all background processes have ended.");
+                printf("\nCtrl-C event detected, no foreground process\nThe shell will terminate after all background processes have ended.");
                 return FALSE; // Allow the parent process to be terminated
             }
 

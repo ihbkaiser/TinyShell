@@ -1,8 +1,10 @@
 #include "./include/createchildprocess.h"
 #include "./include/executebatchfile.h"
 #include "./utils/splitcommand.h"
+#include "./utils/cursor.h"
 #include "./include/path.h"
 #include "./include/date.h"
+#include "./include/clock.h"
 #include <string>
 #include <iostream>
 #include <vector>
@@ -24,6 +26,11 @@ int _tmain(int argc, TCHAR *argv[])
         if (input == "exit") {
             break;
         }
+        if (input == "clear") system("cls");
+        if (input == "time"){
+        	COORD here = cursor();
+        	printClock(here);
+		}
         if (input == "listpath"){
         	listpath();
         	continue;
