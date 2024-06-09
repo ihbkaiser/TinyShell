@@ -1,19 +1,18 @@
 #include <iostream>
 #include <string>
 #include <windows.h>
-
-void executeBatchFile(const std::string& filePath) {
+#include <algorithm>
+void executeBatchFile(std::string& filePath) {
     STARTUPINFO si = { sizeof(si) };
     PROCESS_INFORMATION pi;
 
-    // Thiết lập thuộc tính để không hiển thị cửa sổ
     si.dwFlags = STARTF_USESHOWWINDOW;
     si.wShowWindow = SW_HIDE;
-
-    // Chuỗi lệnh để chạy file batch
+    
+    // accept file path with '/' 
+    std::replace(filePath.begin(), filePath.end(), '/', '\\');
     std::string command = "cmd /c " + filePath;
 
-    // Khởi tạo quá trình
     if (CreateProcess(
         NULL,                      // No module name (use command line)
         &command[0],               // Command line
@@ -26,11 +25,15 @@ void executeBatchFile(const std::string& filePath) {
         &si,                       // Pointer to STARTUPINFO structure
         &pi)                       // Pointer to PROCESS_INFORMATION structure
     ) {
-        // Đợi quá trình hoàn thành
+        DWORD exitCode;
         WaitForSingleObject(pi.hProcess, INFINITE);
+        GetExitCodeProcess(pi.hProcess, &exitCode);
         CloseHandle(pi.hProcess);
         CloseHandle(pi.hThread);
-        std::cout << "Batch file executed successfully.\n";
+        if(exitCode == 0) std::cout << "Batch file executed successfully.\n";
+        else{
+        	std::cerr << "Failed to execute batch file. Error: " << exitCode << "\n";
+		}
     } else {
         std::cerr << "Failed to execute batch file. Error: " << GetLastError() << "\n";
     }
