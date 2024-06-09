@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <cstdlib>
 
 struct Process {
     PROCESS_INFORMATION pi;

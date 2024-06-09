@@ -6,6 +6,7 @@
 #include "./include/path.h"
 #include "./include/date.h"
 #include "./include/clock.h"
+#include "./include/cd.h"
 #include <string>
 #include <iostream>
 #include <vector>
@@ -57,6 +58,9 @@ int _tmain(int argc, TCHAR *argv[])
 		if (input == "close"){
 			close();
 		}
+		if (input == "dir"){
+			dir();
+		}
 		if (input.substr(0,7) == "addpath"){
 			vector<string> command = split(input, ' ');
 			if(command.size() == 1){
@@ -105,6 +109,13 @@ int _tmain(int argc, TCHAR *argv[])
                 std::cout << "Usage: exebat <filepath>\n";
             }
         }
+        if (input.substr(0,2) == "cd"){
+        	vector<string> command = split(input, ' ');
+        	if(command.size()==2){
+        		cd(command[1]);
+			}
+			else std::cout<<"Usage: cd <dir>";
+		}
         if (input.substr(0,4) == "stop"){
         	vector<string> command = split(input, ' ');
         	bool found = false; //did we found a process with that pid ?

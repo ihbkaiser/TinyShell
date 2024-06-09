@@ -5,8 +5,14 @@
 #define MAX_PATH_SIZE 4096
 extern std::vector<std::string> Path;
 void listpath() {
+    char buffer[MAX_PATH_SIZE];
     for (const auto& path : Path) {
-        std::cout << path << std::endl;
+        DWORD length = GetFullPathName(path.c_str(), MAX_PATH_SIZE, buffer, NULL);
+        if (length == 0) {
+            std::cout << "Error getting full absolute path name for: " << path << std::endl;
+        } else {
+            std::cout << buffer << std::endl;
+        }
     }
 }
 
