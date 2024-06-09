@@ -7,6 +7,7 @@
 #include "./include/date.h"
 #include "./include/clock.h"
 #include "./include/cd.h"
+#include "./include/help.h"
 #include <string>
 #include <iostream>
 #include <vector>
@@ -16,7 +17,11 @@ std::vector<Process*> list_of_process; // vector of processes.
 std::vector<std::string> Path;
 int _tmain(int argc, TCHAR *argv[])
 {
+	makeColor();
+	help();
     while (true) {
+    	
+    	bool exec = false;
         std::string input;
         cout << "\nEnter command: ";
         // remove all Ctrl-C when call itterupt signal from the buffer
@@ -25,7 +30,10 @@ int _tmain(int argc, TCHAR *argv[])
         	cin.clear();
         	cin.ignore(numeric_limits<streamsize>::max(), '\n');
  		}
+ 		if (input == "help"){ exec = true; help();
+		 }
         if (input.substr(0,4) == "exit") {
+        	exec = true;
         	vector<string> command = split(input, ' ');
         	if(command.size() == 1){
         		//todo: fix exits, exitss, exitsss
@@ -38,30 +46,45 @@ int _tmain(int argc, TCHAR *argv[])
             	
 			}
 			else std::cout<<"Usage: exit [sf]";
+			continue;
         }
-        if (input == "clear") system("cls");
+        if (input == "clear") {
+        	exec = true;
+        	system("cls"); continue;
+		}
         if (input == "time"){
+        	exec = true;
         	COORD here = cursor();
         	printClock(here);
+        	continue;
 		}
         if (input == "listpath"){
+        	exec = true;
         	listpath();
         	continue;
 		}
 		if (input == "date"){
+			exec = true;
 			PrintDate();
 			continue;
 		}
 		if (input == "list"){
+			exec = true;
 			listprocess();
+			continue;
 		}
 		if (input == "close"){
+			exec = true;
 			close();
+			continue;
 		}
 		if (input == "dir"){
+			exec = true;
 			dir();
+			continue;
 		}
 		if (input.substr(0,7) == "addpath"){
+			exec = true;
 			vector<string> command = split(input, ' ');
 			if(command.size() == 1){
 				cout << "Usage: addpath <path>";
@@ -71,10 +94,12 @@ int _tmain(int argc, TCHAR *argv[])
 				addpath(new_path);
 				continue;
 			}
+			continue;
 		}
 
         if (input.substr(0, 4) == "fork")
         {
+        	exec = true;
             vector<string> command = split(input, ' ');
             // command = {"fork" , "test/example.exe"}
             // kill 6969 
@@ -100,23 +125,29 @@ int _tmain(int argc, TCHAR *argv[])
             {
                 cout << "Usage: fork <dir> [foreground/background]" << endl;
             }
+            continue;
         }
         if (input.substr(0, 6) == "exebat") {
+        	exec = true;
             vector<string> command = split(input, ' ');
             if (command.size() == 2) {
                 executeBatchFile(command[1]);
             } else {
                 std::cout << "Usage: exebat <filepath>\n";
             }
+            continue;
         }
         if (input.substr(0,2) == "cd"){
+        	exec = true;
         	vector<string> command = split(input, ' ');
         	if(command.size()==2){
         		cd(command[1]);
 			}
 			else std::cout<<"Usage: cd <dir>";
+			continue;
 		}
         if (input.substr(0,4) == "stop"){
+        	exec = true;
         	vector<string> command = split(input, ' ');
         	bool found = false; //did we found a process with that pid ?
         	if(command.size() == 2){
@@ -135,9 +166,11 @@ int _tmain(int argc, TCHAR *argv[])
 			else{
 				std::cout << "Usage: stop <pid>" << endl;
 			}
+			continue;
 		}
 
          if (input.substr(0,6) == "resume"){
+         	exec = true;
         	vector<string> command = split(input, ' ');
         	bool found = false; //did we found a process with that pid ?
         	bool findStop = false;
@@ -161,8 +194,10 @@ int _tmain(int argc, TCHAR *argv[])
 			else{
 				std::cout << "Usage: resume <pid>" << endl;
 			}
+			continue;
 		}
         if (input.substr(0,4) == "kill"){
+        	exec = true;
         	vector<string> command = split(input, ' ');
         	bool found = false; //did we found a process with that pid ?
         	if(command.size() == 2){
@@ -181,8 +216,13 @@ int _tmain(int argc, TCHAR *argv[])
 			else{
 				std::cout << "Usage: kill <pid>" << endl;
 			}
+			continue;
+		}
+		if(!exec){
+			std::cout << "Invalid command. Type 'help' for more details\n";
 		}
     }
+    
 
     return 0;
 }
