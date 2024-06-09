@@ -3,12 +3,13 @@
 #include <tchar.h>
 #include <vector>
 #include <string>
-
+#include <iostream>
 
 struct Process {
     PROCESS_INFORMATION pi;
     std::string name;
     bool foreground;
+    bool isStop = false;
 
     Process(TCHAR* processName, bool isForeground) 
         : name(processName), foreground(isForeground) {
@@ -31,6 +32,36 @@ struct Process {
         CloseHandle(pi.hThread);
         // after terminate process, we should delete it from the list list_of_process vector.
     }
+    void stop() {
+        isStop = true;
+    if (currentActive()) {
+        if (SuspendThread(pi.hThread) == -1) {
+            // Handle error
+            std::cerr << "Error stopping the process." << std::endl;
+        }
+    } else {
+        std::cerr << "Process is not currently running." << std::endl;
+    }
+}
+    void resume() {
+    DWORD threadStatus = SuspendThread(pi.hThread);
+    if (threadStatus == -1) {
+        // Error occurred
+        std::cerr << "Error checking process status." << std::endl;
+    } else if (threadStatus == 0) {
+        // Thread is not suspended, i.e., process is running
+        std::cerr << "Process is not stopped." << std::endl;
+    } else {
+        // Thread is suspended, i.e., process is stopped
+        if (ResumeThread(pi.hThread) == -1) {
+            // Error occurred
+            std::cerr << "Error resuming the process." << std::endl;
+        }
+    }
+    isStop = false;
+}
+
+
 };
 
 extern std::vector<Process*> list_of_process; // the list_of_process vector move to main() function
@@ -149,8 +180,8 @@ void createChildProcess(int argc, TCHAR* argv[]) {
             }
         }
     } else {
-        CloseHandle(process->pi.hProcess);
-        CloseHandle(process->pi.hThread);
+        // CloseHandle(process->pi.hProcess);
+        // CloseHandle(process->pi.hThread);
         printf("Child process is running in background\n");
     }
 }
