@@ -8,11 +8,12 @@
 #include "./include/clock.h"
 #include "./include/cd.h"
 #include "./include/help.h"
+#include "./include/history.h"
 #include <string>
 #include <iostream>
 #include <vector>
 #include <tchar.h>
-
+std::vector<std::string> History;
 std::vector<Process*> list_of_process; // vector of processes.
 std::vector<std::string> Path;
 int _tmain(int argc, TCHAR *argv[])
@@ -30,8 +31,17 @@ int _tmain(int argc, TCHAR *argv[])
         	cin.clear();
         	cin.ignore(numeric_limits<streamsize>::max(), '\n');
  		}
+        History.push_back(input);
  		if (input == "help"){ exec = true; help();
 		 }
+		if (input == "history"){
+			exec = true;
+			printHistory();
+		}
+		if (input == "clearhistory"){
+			exec = true;
+			clearHistory();
+		}
         if (input.substr(0,4) == "exit") {
         	exec = true;
         	vector<string> command = split(input, ' ');
