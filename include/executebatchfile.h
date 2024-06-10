@@ -35,3 +35,12 @@ void executeBatchFile(const std::string& filePath) {
         std::cerr << "Failed to execute batch file. Error: " << GetLastError() << "\n";
     }
 }
+
+void execute_command(const std::string &command) {
+    std::string cmd_command = "cmd /c " + command;
+    int result = system(cmd_command.c_str());
+    if (result == -1) {
+        perror("system failed");
+    } 
+    
+}

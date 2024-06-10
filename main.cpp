@@ -67,13 +67,21 @@ int _tmain(int argc, TCHAR *argv[])
                 cout << "Usage: fork <dir> [foreground/background]" << endl;
             }
         }
-        if (input.substr(0, 6) == "exebat") {
+        if (input.substr(0, 10) == "exebatfile") {
             vector<string> command = split(input, ' ');
             if (command.size() == 2) {
                 executeBatchFile(command[1]);
             } else {
                 std::cout << "Usage: exebat <filepath>\n";
             }
+        } 
+        if (input.substr(0, 3) == "cmd") {
+            if (input.size() <= 4) {
+                std::cout << "Usage: cmd <cmd Command>\n";
+                continue;
+            }
+            string command = input.substr(4);
+            execute_command(command);
         }
         // add more commands here
     }
