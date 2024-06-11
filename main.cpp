@@ -9,6 +9,7 @@
 #include "./include/cd.h"
 #include "./include/help.h"
 #include "./include/history.h"
+#include "./include/search.h"
 #include <string>
 #include <iostream>
 #include <vector>
@@ -32,6 +33,9 @@ int _tmain(int argc, TCHAR *argv[])
         	cin.ignore(numeric_limits<streamsize>::max(), '\n');
  		}
         History.push_back(input);
+        if(input == "google"){
+        	Search();
+		}
  		if (input == "help"){ exec = true; help();
 		 }
 		if (input == "history"){

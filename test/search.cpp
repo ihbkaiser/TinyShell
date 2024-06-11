@@ -51,7 +51,7 @@ int main() {
     _setmode(_fileno(stdout), _O_U16TEXT);
     _setmode(_fileno(stdin), _O_U16TEXT);
 //    system("chcp 65001");
- //   std::wcout << L"Pls enter by English \n";
+    std::wcout << L"Pls enter by English \n";
     std::wcout << L"Enter query: ";
     std::wstring ws;
     std::getline(std::wcin, ws);

@@ -47,8 +47,10 @@ TimeZone* getTimeZone(const std::string& cityName) {
 void printClock(COORD startpos) {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     bool runClock = true;
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
 
     while (runClock) {
+        
         printAvailableCities();
         
         std::string cityName;
@@ -62,12 +64,15 @@ void printClock(COORD startpos) {
         TimeZone* selectedTimeZone = getTimeZone(cityName);
         if (selectedTimeZone != nullptr) {
             std::cout << "Press 'h' to terminate the clock !" << std::endl;
+            if (GetConsoleScreenBufferInfo(hConsole, &csbi)) {
+            startpos = csbi.dwCursorPosition;
+        }
             while (runClock) {
+                SetConsoleCursorPosition(hConsole, startpos);
                 std::time_t t = std::time(nullptr);
                 t += selectedTimeZone->offset * 3600;
                 std::tm* now = std::gmtime(&t);
 
-                SetConsoleCursorPosition(hConsole, startpos);
                 std::cout << "Current time in " << selectedTimeZone->name << ": "
                           << (now->tm_hour < 10 ? "0" : "") << now->tm_hour << ':'
                           << (now->tm_min < 10 ? "0" : "") << now->tm_min << ':'
@@ -89,6 +94,7 @@ void printClock(COORD startpos) {
         }
     }
 }
+
 // just for testing
 //int main() {
 //    COORD startPos = {0, 2};
