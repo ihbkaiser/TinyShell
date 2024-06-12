@@ -13,7 +13,7 @@ This project includes TinyShell - practical project of Operating System class - 
 | Tùng   | Create child processes (foreground, background mode) |
 | Cường  | Manage processes (List, kill, stop, resume)          |
 | Chung  | Special commands (date, time, dir, ...)              |
-| Đăng   | Execute .bat files                                   |
+| Đăng   | Execute .bat files, cmd command                      |
 ## 4. Usage
 You can use TinyShell by compiling it with the following command:
 ```
