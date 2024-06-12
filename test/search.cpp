@@ -54,7 +54,8 @@ int main() {
     std::wcout << L"Pls enter by English \n";
     std::wcout << L"Enter query: ";
     std::wstring ws;
-    std::getline(std::wcin, ws);
+    if(std::getline(std::wcin, ws))cout<<"ok";
+    else cout<<"error";
 
     std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
     std::string s = converter.to_bytes(ws);

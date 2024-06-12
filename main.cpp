@@ -21,20 +21,37 @@ int _tmain(int argc, TCHAR *argv[])
 {
 	makeColor();
 	help();
+
     while (true) {
-    	
     	bool exec = false;
         std::string input;
-        cout << "\nEnter command: ";
+        
+        std::cout << "\nEnter command: ";
         // remove all Ctrl-C when call itterupt signal from the buffer
+        std::cin.clear();
         while(true){
-        	if(getline(cin, input)) break;
-        	cin.clear();
-        	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        	if(getline(std::cin, input)) break;
+        	std::cin.clear();
+        	std::cin.ignore(numeric_limits<streamsize>::max(), '\n');
  		}
+// skip leading strange characters
+// The input string might contain strange characters after calling SearchGoogle().
+// This is a temporary solution to address this issue.
+ 		int first_alphabet = -1;
+        for(int i=0; i<input.size(); i++){
+        	if(std::isalpha(input[i])){
+        		first_alphabet = i;
+        		break;
+			}
+		}
+		if(first_alphabet == -1) continue;
+		input = input.substr(first_alphabet);
+//////
         History.push_back(input);
         if(input == "google"){
+        	exec = true;
         	Search();
+        	std::cin.clear();
 		}
  		if (input == "help"){ exec = true; help();
 		 }
@@ -241,9 +258,9 @@ int _tmain(int argc, TCHAR *argv[])
 			}
 			continue;
 		}
-		if(!exec){
-			std::cout << "Invalid command. Type 'help' for more details\n";
-		}
+		if (!exec && std::any_of(input.begin(), input.end(), [](char c){ return std::isalpha(c); })) {
+    std::cout << "Invalid command. Type 'help' for more details\n";
+}
     }
     
 

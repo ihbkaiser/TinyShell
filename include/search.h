@@ -28,6 +28,8 @@ std::string urlEncode(const std::string& value) {
 }
 
 void SearchGoogle(const std::string& query) {
+//_setmode(_fileno(stdout), _O_U16TEXT);
+//_setmode(_fileno(stdin), _O_U16TEXT);
     const char* chromePath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
 
     std::string encodedQuery = urlEncode(query);
@@ -42,22 +44,34 @@ void SearchGoogle(const std::string& query) {
     WideCharToMultiByte(CP_ACP, 0, wideUrl, -1, ansiUrl, ansiSize, NULL, NULL);
 
     ShellExecute(NULL, "open", chromePath, ansiUrl, NULL, SW_SHOWNORMAL);
-
     delete[] wideUrl;
     delete[] ansiUrl;
+    return;
 }
 void Search(){
-	    _setmode(_fileno(stdout), _O_U16TEXT);
+    _setmode(_fileno(stdout), _O_U16TEXT);
     _setmode(_fileno(stdin), _O_U16TEXT);
-	std::wcout << L"Enter query: ";
-	std::wstring ws;
-	std::getline(std::wcin, ws);
+
+    std::wcout << L"Enter query: ";
+    std::wstring ws;
+    std::getline(std::wcin, ws);
 
     std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
     std::string s = converter.to_bytes(ws);
-
     SearchGoogle(s);
-	
+
+    // Clear the wide input stream
+    
+
+    _setmode(_fileno(stdout), _O_TEXT);
+    _setmode(_fileno(stdin), _O_TEXT);
+
+    // Clear the input stream
+//    std::wcin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cin.clear();
+
+    return;
 }
 //int main() {
 //    _setmode(_fileno(stdout), _O_U16TEXT);
