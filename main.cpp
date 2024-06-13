@@ -170,6 +170,7 @@ int _tmain(int argc, TCHAR *argv[])
             continue;
         } 
         if (input.substr(0, 3) == "cmd") {
+        	exec = true;
             if (input.size() <= 4) {
                 std::cout << "Usage: cmd <cmd Command>\n";
                 continue;
@@ -178,22 +179,32 @@ int _tmain(int argc, TCHAR *argv[])
             execute_command(command);
             continue;
         }
-		if (input.substr(0, 7) == "youtube") {
+		if (input == "youtube") {
+			exec = true;
             open_website("https://www.youtube.com");
             continue;
 		}
-        if (input.substr(0, 7) == "chatgpt") {
+        if (input == "chatgpt") {
+        	exec = true;
             open_website("https://chat.openai.com");
             continue;
         }
-        if (input.substr(0, 8) == "facebook") {
+        if (input == "facebook") {
+        	exec = true;
             open_website("https://facebook.com");
             continue;
         }
         if (input.substr(0, 3) == "web") {
-			vector<string> command = split(input, ' ');
+        	exec = true;
+        	
+        	vector<string> command = split(input, ' ');
+        	if(command.size() == 2){
 			string url = "https://" + command[1];
             open_website(url);
+        		
+			}
+			else std::cout << "Usage: web <url>";
+			
             continue;
         }
         if (input.substr(0,2) == "cd"){
