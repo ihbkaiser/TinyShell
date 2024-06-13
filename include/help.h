@@ -26,6 +26,14 @@ void help() {
     std::cout << GREEN << "stop <pid>" << RESET << " - Stop a process with the specified process ID (pid)." << std::endl;
     std::cout << GREEN << "resume <pid>" << RESET << " - Resume a stopped process with the specified process ID (pid)." << std::endl;
     std::cout << GREEN << "kill <pid>" << RESET << " - Terminate a process with the specified process ID (pid)." << std::endl;
+    std::cout << GREEN << "history" << RESET << " - View previous commands" << std::endl;
+    std::cout << GREEN << "clearhistory" << RESET << " - Clear the command history" << std::endl;
+    std::cout << GREEN << "google" << RESET << " - Open Google search tool; we also support Vietnamese queries" << std::endl;
+    std::cout << GREEN << "youtube" << RESET << " - Open YouTube in the default browser" << std::endl;
+std::cout << GREEN << "chatgpt" << RESET << " - Open ChatGPT in the default browser" << std::endl;
+std::cout << GREEN << "facebook" << RESET << " - Open Facebook in the default browser" << std::endl;
+std::cout << GREEN << "web <url>" << RESET << " - Open a webpage given by the url in the default browser" << std::endl;
+
 }
 void makeColor() {
 HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -82,7 +90,7 @@ HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 };
 
     for (char c : message) {
-        SetConsoleTextAttribute(hConsole, colors[rand() % 12]);
+        SetConsoleTextAttribute(hConsole, colors[rand() % 14]);
         std::cout << c << std::flush;
 //        std::this_thread::sleep_for(std::chrono::microseconds(1));
     }
