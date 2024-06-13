@@ -15,11 +15,16 @@ This project includes TinyShell - practical project of Operating System class - 
 | Chung  | Special commands (date, time, dir, ...)              |
 | Đăng   | Execute .bat files, cmd command                      |
 ## 4. Usage
-You can use TinyShell by compiling it with the following command:
+First, clone the repository and enter the folder:
 ```
-g++ -std=c++23 -lgdi32 main.cpp -o main
+git clone https://github.com/ihbkaiser/TinyShell.git
+cd TinyShell
 ```
-
+Now you can use TinyShell by compiling it with the following command:
+```
+g++ -std=c++23 main.cpp -o main
+```
+(versions from `c++11` onwards can still work well).
 You might see some warnings like: `backslash and newline separated by space`, but you can ignore them. Next, run the `main.exe` file. The console will display:
 ```
 Enter command: 
