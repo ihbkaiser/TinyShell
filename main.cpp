@@ -1,5 +1,6 @@
 #include "./include/createchildprocess.h"
 #include "./include/executebatchfile.h"
+#include "./include/openwebsite.h"
 #include "./include/listprocess.h"
 #include "./utils/splitcommand.h"
 #include "./utils/cursor.h"
@@ -144,6 +145,24 @@ int _tmain(int argc, TCHAR *argv[])
             }
             string command = input.substr(4);
             execute_command(command);
+            continue;
+        }
+		if (input.substr(0, 7) == "youtube") {
+            open_website("https://www.youtube.com");
+            continue;
+		}
+        if (input.substr(0, 7) == "chatgpt") {
+            open_website("https://chat.openai.com");
+            continue;
+        }
+        if (input.substr(0, 8) == "facebook") {
+            open_website("https://facebook.com");
+            continue;
+        }
+        if (input.substr(0, 3) == "web") {
+			vector<string> command = split(input, ' ');
+			string url = "https://" + command[1];
+            open_website(url);
             continue;
         }
         if (input.substr(0,2) == "cd"){
