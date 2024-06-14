@@ -1,16 +1,6 @@
-#include "./include/createchildprocess.h"
+
 #include "./include/executebatchfile.h"
-#include "./include/openwebsite.h"
-#include "./include/listprocess.h"
-#include "./utils/splitcommand.h"
-#include "./utils/cursor.h"
-#include "./include/path.h"
-#include "./include/date.h"
-#include "./include/clock.h"
-#include "./include/cd.h"
-#include "./include/help.h"
-#include "./include/history.h"
-#include "./include/search.h"
+
 #include <string>
 #include <iostream>
 #include <vector>
@@ -265,6 +255,12 @@ int _tmain(int argc, TCHAR *argv[])
 				std::cout << "Usage: resume <pid>" << endl;
 			}
 			continue;
+		}
+		if(input.substr(0,4) == "exeb"){
+			exec = true;
+			vector<string> command = split(input, ' ');
+			if(command.size() == 2) parse(command[1]);
+			else std::cout<<"Usage: exeb <filepath>";
 		}
         if (input.substr(0,4) == "kill"){
         	exec = true;
